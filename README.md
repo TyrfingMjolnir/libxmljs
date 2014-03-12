@@ -4,26 +4,29 @@
 LibXML bindings for [node.js](http://nodejs.org/)
 
 ```javascript
-var libxmljs = require("libxmljs");
+#!/usr/local/bin/node
+
+var libxmljs = require( "libxmljs" );
 var xml =  '<?xml version="1.0" encoding="UTF-8"?>' +
            '<root>' +
                '<child foo="bar">' +
                    '<grandchild baz="fizbuzz">grandchild content</grandchild>' +
+                   '<grandchild baz="fiz">grandchild content 2</grandchild>' +
+                   '<grandchild baz="buzz" faz="3">grandchild content 3</grandchild>' +
                '</child>' +
                '<sibling>with content!</sibling>' +
            '</root>';
 
-var xmlDoc = libxmljs.parseXml(xml);
+var xmlDoc = libxmljs.parseXml( xml );
 
-// xpath queries
-var gchild = xmlDoc.get('//grandchild');
-
-console.log(gchild.text());  // prints "grandchild content"
+var specificgchild = xmlDoc.get('/root/child/grandchild[@baz="buzz"]');
+console.log( specificgchild.text() ); // prints "grandchild content 3"
+console.log( specificgchild.attr('faz').value() ); // prints "3"
 
 var children = xmlDoc.root().childNodes();
 var child = children[0];
 
-console.log(child.attr('foo').value()); // prints "bar"
+console.log( child.attr( 'foo' ).value() ); // prints "bar"
 ```
 
 ## Support
